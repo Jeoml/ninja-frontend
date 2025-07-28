@@ -1,15 +1,16 @@
 'use server';
 
 import { redirect } from 'next/navigation';
-import { createCheckoutSession, createCustomerPortalSession } from './stripe';
 import { withTeam } from '@/lib/auth/middleware';
 
+// You can remove or replace these actions as needed
 export const checkoutAction = withTeam(async (formData, team) => {
-  const priceId = formData.get('priceId') as string;
-  await createCheckoutSession({ team: team, priceId });
+  // Stripe logic removed
+  // Implement alternative logic or leave empty
 });
 
 export const customerPortalAction = withTeam(async (_, team) => {
-  const portalSession = await createCustomerPortalSession(team);
-  redirect(portalSession.url);
+  // Stripe logic removed
+  // Implement alternative logic or leave empty
+  // Example: redirect('/dashboard');
 });
