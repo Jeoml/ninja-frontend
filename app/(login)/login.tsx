@@ -1,14 +1,15 @@
 'use client';
 
 import Link from 'next/link';
-import { useActionState } from 'react';
+import { useActionState, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { CircleIcon, Loader2 } from 'lucide-react';
 import { signIn, signUp } from './actions';
-import { ActionState } from '@/lib/auth/middleware';
+import { ActionState, generateAuthToken } from '@/lib/auth/middleware';
+import { getUser } from '@/lib/db/queries';
 
 export function Login({ mode = 'signin' }: { mode?: 'signin' | 'signup' }) {
   const searchParams = useSearchParams();
@@ -19,6 +20,26 @@ export function Login({ mode = 'signin' }: { mode?: 'signin' | 'signup' }) {
     mode === 'signin' ? signIn : signUp,
     { error: '' }
   );
+
+  // Generate and store auth token after successful authentication
+  useEffect(() => {
+    const handleAuthToken = async () => {
+      try {
+        const user = await getUser();
+        if (user && !state.error) {
+          const token = await generateAuthToken(user);
+          localStorage.setItem('authToken', token);
+          console.log('Auth token stored successfully');
+        }
+      } catch (error) {
+        console.error('Failed to generate auth token:', error);
+      }
+    };
+
+    if (!pending && !state.error) {
+      handleAuthToken();
+    }
+  }, [pending, state.error]);
 
   return (
     <div className="min-h-[100dvh] flex flex-col justify-center py-12 px-4 sm:px-6 lg:px-8 bg-gray-50">
