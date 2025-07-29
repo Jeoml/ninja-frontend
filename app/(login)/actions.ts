@@ -23,7 +23,8 @@ import { cookies } from 'next/headers';
 import { getUser, getUserWithTeam } from '@/lib/db/queries';
 import {
   validatedAction,
-  validatedActionWithUser
+  validatedActionWithUser,
+  generateAuthToken
 } from '@/lib/auth/middleware';
 
 async function logActivity(
@@ -91,13 +92,23 @@ export const signIn = validatedAction(signInSchema, async (data, formData) => {
     logActivity(foundTeam?.id, foundUser.id, ActivityType.SIGN_IN)
   ]);
 
+  // Generate JWT token for the user
+  const token = await generateAuthToken(foundUser);
+
   // const redirectTo = formData.get('redirect') as string | null;
   // if (redirectTo === 'checkout') {
   //   const priceId = formData.get('priceId') as string;
   //   return createCheckoutSession({ team: foundTeam, priceId });
   // }
 
-  redirect('/dashboard');
+  // Return success with token and user data instead of redirecting immediately
+  return {
+    success: 'Signed in successfully',
+    token: token,
+    user: { id: foundUser.id.toString(), email: foundUser.email }
+  };
+
+  // redirect('/dashboard');
 });
 
 const signUpSchema = z.object({
@@ -212,13 +223,23 @@ export const signUp = validatedAction(signUpSchema, async (data, formData) => {
     setSession(createdUser)
   ]);
 
+  // Generate JWT token for the new user
+  const token = await generateAuthToken(createdUser);
+
   // const redirectTo = formData.get('redirect') as string | null;
   // if (redirectTo === 'checkout') {
   //   const priceId = formData.get('priceId') as string;
   //   return createCheckoutSession({ team: createdTeam, priceId });
   // }
 
-  redirect('/dashboard');
+  // Return success with token and user data instead of redirecting immediately
+  return {
+    success: 'Account created successfully',
+    token: token,
+    user: { id: createdUser.id.toString(), email: createdUser.email }
+  };
+
+  // redirect('/dashboard');
 });
 
 export async function signOut() {

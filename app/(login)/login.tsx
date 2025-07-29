@@ -2,17 +2,17 @@
 
 import Link from 'next/link';
 import { useActionState, useEffect } from 'react';
-import { useSearchParams } from 'next/navigation';
+import { useSearchParams, useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { CircleIcon, Loader2 } from 'lucide-react';
 import { signIn, signUp } from './actions';
-import { ActionState, generateAuthToken } from '@/lib/auth/middleware';
-import { getUser } from '@/lib/db/queries';
+import { ActionState } from '@/lib/auth/middleware';
 
 export function Login({ mode = 'signin' }: { mode?: 'signin' | 'signup' }) {
   const searchParams = useSearchParams();
+  const router = useRouter();
   const redirect = searchParams.get('redirect');
   const priceId = searchParams.get('priceId');
   const inviteId = searchParams.get('inviteId');
@@ -21,25 +21,18 @@ export function Login({ mode = 'signin' }: { mode?: 'signin' | 'signup' }) {
     { error: '' }
   );
 
-  // Generate and store auth token after successful authentication
+  // Store token and redirect after successful authentication
   useEffect(() => {
-    const handleAuthToken = async () => {
-      try {
-        const user = await getUser();
-        if (user && !state.error) {
-          const token = await generateAuthToken(user);
-          localStorage.setItem('authToken', token);
-          console.log('Auth token stored successfully');
-        }
-      } catch (error) {
-        console.error('Failed to generate auth token:', error);
-      }
-    };
-
-    if (!pending && !state.error) {
-      handleAuthToken();
+    if (!pending && state.success && state.token) {
+      // Store the JWT token returned from server
+      localStorage.setItem('authToken', state.token);
+      console.log('Auth token stored successfully');
+      
+      // Redirect to dashboard or specified redirect URL
+      const redirectTo = redirect || '/dashboard';
+      router.push(redirectTo);
     }
-  }, [pending, state.error]);
+  }, [pending, state.success, state.token, redirect, router]);
 
   return (
     <div className="min-h-[100dvh] flex flex-col justify-center py-12 px-4 sm:px-6 lg:px-8 bg-gray-50">

@@ -2,11 +2,13 @@ import { z } from 'zod';
 import { TeamDataWithMembers, User } from '@/lib/db/schema';
 import { getTeamForUser, getUser } from '@/lib/db/queries';
 import { redirect } from 'next/navigation';
-import { SignJWT, jwtVerify } from 'jose';
+import jwt from 'jsonwebtoken';
 
 export type ActionState = {
   error?: string;
   success?: string;
+  token?: string;
+  user?: { id: string; email: string };
   [key: string]: any; // This allows for additional properties
 };
 
@@ -78,27 +80,25 @@ export function withTeam<T>(action: ActionWithTeamFunction<T>) {
 
 // Auth Token Code
 
-const JWT_SECRET = new TextEncoder().encode(
-  process.env.JWT_SECRET || 'your-secret-key'
-);
+const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key';
 
 export async function generateAuthToken(user: User): Promise<string> {
-  const token = await new SignJWT({ 
-    userId: user.id, 
-    email: user.email 
-  })
-    .setProtectedHeader({ alg: 'HS256' })
-    .setIssuedAt()
-    .setExpirationTime('24h')
-    .sign(JWT_SECRET);
+  const token = jwt.sign(
+    { 
+      userId: user.id, 
+      email: user.email 
+    },
+    JWT_SECRET,
+    { expiresIn: '24h' }
+  );
   
   return token;
 }
 
 export async function verifyAuthToken(token: string): Promise<{ userId: string; email: string } | null> {
   try {
-    const { payload } = await jwtVerify(token, JWT_SECRET);
-    return payload as { userId: string; email: string };
+    const payload = jwt.verify(token, JWT_SECRET) as { userId: string; email: string };
+    return payload;
   } catch {
     return null;
   }
