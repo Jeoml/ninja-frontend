@@ -51,12 +51,12 @@ export default function HomePage() {
                 and Instagram messaging platforms.
               </p>
               <div className="mt-8 sm:max-w-lg sm:mx-auto sm:text-center lg:text-left lg:mx-0">
-                <a href="/sign-up">
+                <a href="https://www.linkedin.com/in/joel-t-110941240/">
                   <Button
                     size="lg"
                     className="text-lg rounded-full bg-indigo-500 hover:bg-orange-600"
                   >
-                    Start Free Trial
+                    Contact Us
                     <ArrowRight className="ml-2 h-5 w-5" />
                   </Button>
                 </a>
@@ -195,7 +195,7 @@ export default function HomePage() {
                   </li>
                 </ul>
               </div>
-              <div className="mt-8 flex flex-col space-y-4 lg:flex-row lg:space-y-0 lg:space-x-4">
+              {/* <div className="mt-8 flex flex-col space-y-4 lg:flex-row lg:space-y-0 lg:space-x-4">
                 <a href="/sign-up">
                   <Button
                     size="lg"
@@ -214,7 +214,7 @@ export default function HomePage() {
                     Watch Demo
                   </Button>
                 </a>
-              </div>
+              </div> */}
             </div>
           </div>
           <div className="py-16 bg-white">
