@@ -1,16 +1,38 @@
-import { Button } from '@/components/ui/button';
-import { ArrowRight, MessageCircle, Instagram, Bot, ShoppingCart, RefreshCw } from 'lucide-react';
-import { Terminal } from './terminal';
-import Agent from '@/app/api/agent';
-import Image from 'next/image';
+"use client";
+
+import { Button } from "@/components/ui/button";
+import {
+  ArrowRight,
+  MessageCircle,
+  Instagram,
+  Bot,
+  ShoppingCart,
+  RefreshCw,
+} from "lucide-react";
+import { Terminal } from "./terminal";
+import Agent from "@/app/api/agent";
+import Image from "next/image";
+import { useState, useEffect } from "react";
 
 // Images from public folder
 const publicImages = [
-  { src: '/huncywhatsapp.png', alt: 'Huncy WhatsApp' },
-  { src: '/huncyinstagram.png', alt: 'Huncy Instagram' }
+  { src: "/huncywhatsapp.png", alt: "Huncy WhatsApp" },
+  { src: "/huncyinstagram.png", alt: "Huncy Instagram" },
 ];
 
 export default function HomePage() {
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentImageIndex(
+        (prevIndex) => (prevIndex + 1) % publicImages.length
+      );
+    }, 2000); // Change image every 2 seconds
+
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <main>
       <section className="py-20">
@@ -19,11 +41,14 @@ export default function HomePage() {
             <div className="sm:text-center md:max-w-2xl md:mx-auto lg:col-span-6 lg:text-left">
               <h1 className="text-3xl font-bold text-gray-900 tracking-tight sm:text-4xl md:text-5xl">
                 Agentic Customer Service
-                <span className="block text-indigo-500">for WhatsApp & Instagram</span>
+                <span className="block text-indigo-500">
+                  for WhatsApp & Instagram
+                </span>
               </h1>
               <p className="mt-3 text-base text-gray-500 sm:mt-5 sm:text-xl lg:text-lg xl:text-xl">
-                Automate your customer support with intelligent AI agents that handle order queries, 
-                refund requests, and more across WhatsApp and Instagram messaging platforms.
+                Automate your customer support with intelligent AI agents that
+                handle order queries, refund requests, and more across WhatsApp
+                and Instagram messaging platforms.
               </p>
               <div className="mt-8 sm:max-w-lg sm:mx-auto sm:text-center lg:text-left lg:mx-0">
                 <a href="/sign-up">
@@ -55,7 +80,7 @@ export default function HomePage() {
               Deploy intelligent customer service across your messaging channels
             </p>
           </div>
-          
+
           <div className="lg:grid lg:grid-cols-2 lg:gap-8 mb-16">
             <div className="bg-gray-50 rounded-lg p-8">
               <div className="flex items-center justify-center h-12 w-12 rounded-md bg-green-500 text-white mb-4">
@@ -65,8 +90,9 @@ export default function HomePage() {
                 WhatsApp Integration
               </h3>
               <p className="text-base text-gray-500">
-                Connect your AI agent to WhatsApp Business API and handle customer queries 24/7 
-                with intelligent responses and order tracking capabilities.
+                Connect your AI agent to WhatsApp Business API and handle
+                customer queries 24/7 with intelligent responses and order
+                tracking capabilities.
               </p>
             </div>
 
@@ -78,8 +104,9 @@ export default function HomePage() {
                 Instagram Messaging
               </h3>
               <p className="text-base text-gray-500">
-                Integrate with Instagram Direct Messages to provide seamless customer support 
-                and handle inquiries across all your social media channels.
+                Integrate with Instagram Direct Messages to provide seamless
+                customer support and handle inquiries across all your social
+                media channels.
               </p>
             </div>
           </div>
@@ -94,8 +121,9 @@ export default function HomePage() {
                   Order Query Management
                 </h2>
                 <p className="mt-2 text-base text-gray-500">
-                  AI agents automatically handle "Where is my order?" queries, providing 
-                  real-time shipping status, delivery estimates, and tracking information.
+                  AI agents automatically handle "Where is my order?" queries,
+                  providing real-time shipping status, delivery estimates, and
+                  tracking information.
                 </p>
               </div>
             </div>
@@ -109,8 +137,9 @@ export default function HomePage() {
                   Smart Refund Processing
                 </h2>
                 <p className="mt-2 text-base text-gray-500">
-                  Accept images and metadata for refund requests. AI validates submissions 
-                  and notifies business owners for approval with all necessary details.
+                  Accept images and metadata for refund requests. AI validates
+                  submissions and notifies business owners for approval with all
+                  necessary details.
                 </p>
               </div>
             </div>
@@ -124,8 +153,9 @@ export default function HomePage() {
                   Intelligent AI Agent
                 </h2>
                 <p className="mt-2 text-base text-gray-500">
-                  Advanced natural language processing understands customer intent 
-                  and provides contextually appropriate responses with human-like interaction.
+                  Advanced natural language processing understands customer
+                  intent and provides contextually appropriate responses with
+                  human-like interaction.
                 </p>
               </div>
             </div>
@@ -133,17 +163,17 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="py-16 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="lg:grid lg:grid-cols-2 lg:gap-8 lg:items-center">
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="lg:grid lg:grid-cols-2 lg:gap-8 lg:items-center">
+          <div className="py-16 bg-gray-50">
             <div>
               <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">
                 Ready to automate your customer service?
               </h2>
               <p className="mt-3 max-w-3xl text-lg text-gray-500">
-                Join hundreds of businesses already using our AI agents to provide 
-                exceptional customer support on WhatsApp and Instagram. Reduce response 
-                times and increase customer satisfaction.
+                Join hundreds of businesses already using our AI agents to
+                provide exceptional customer support on WhatsApp and Instagram.
+                Reduce response times and increase customer satisfaction.
               </p>
               <div className="mt-6">
                 <ul className="space-y-2 text-gray-600">
@@ -165,51 +195,58 @@ export default function HomePage() {
                   </li>
                 </ul>
               </div>
-            </div>
-            <div className="mt-8 lg:mt-0 flex flex-col space-y-4 justify-center lg:justify-end">
-              <a href="/sign-up">
-                <Button
-                  size="lg"
-                  className="text-lg rounded-full bg-indigo-500 hover:bg-orange-600 w-full"
-                >
-                  Get Started Free
-                  <ArrowRight className="ml-3 h-6 w-6" />
-                </Button>
-              </a>
-              <a href="/demo" className="text-center">
-                <Button
-                  size="lg"
-                  variant="outline"
-                  className="text-lg rounded-full w-full"
-                >
-                  Watch Demo
-                </Button>
-              </a>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Image Gallery Section */}
-      <section className="py-16 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900">
-              Our Partners & Integrations
-            </h2>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-center justify-items-center">
-            {publicImages.map((image, index) => (
-              <div key={index} className="flex items-center justify-center p-4">
-                <Image
-                  src={image.src}
-                  alt={image.alt}
-                  width={120}
-                  height={120}
-                  className="object-contain"
-                />
+              <div className="mt-8 flex flex-col space-y-4 lg:flex-row lg:space-y-0 lg:space-x-4">
+                <a href="/sign-up">
+                  <Button
+                    size="lg"
+                    className="text-lg rounded-full bg-indigo-500 hover:bg-orange-600 w-full lg:w-auto"
+                  >
+                    Get Started Free
+                    <ArrowRight className="ml-3 h-6 w-6" />
+                  </Button>
+                </a>
+                <a href="/demo">
+                  <Button
+                    size="lg"
+                    variant="outline"
+                    className="text-lg rounded-full w-full lg:w-auto"
+                  >
+                    Watch Demo
+                  </Button>
+                </a>
               </div>
-            ))}
+            </div>
+          </div>
+          <div className="py-16 bg-white">
+            {/* Image Carousel - will stack below on mobile, side by side on lg+ */}
+            <div className="mt-12 lg:mt-0 flex justify-center">
+              <div className="relative bg-white">
+                <div className="w-80 h-96 flex items-center justify-center">
+                  <Image
+                    src={publicImages[currentImageIndex].src}
+                    alt={publicImages[currentImageIndex].alt}
+                    width={320}
+                    height={640}
+                    className="object-contain duration-500"
+                  />
+                </div>
+
+                {/* Dots indicator */}
+                <div className="flex justify-center mt-4 space-x-2">
+                  {publicImages.map((_, index) => (
+                    <button
+                      key={index}
+                      className={`w-2 h-2 rounded-full transition-colors ${
+                        index === currentImageIndex
+                          ? "bg-gray-400"
+                          : "bg-gray-300"
+                      }`}
+                      onClick={() => setCurrentImageIndex(index)}
+                    />
+                  ))}
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
