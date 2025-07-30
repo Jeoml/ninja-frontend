@@ -3,6 +3,8 @@ import type { Metadata, Viewport } from 'next';
 import { Manrope } from 'next/font/google';
 import { getUser, getTeamForUser } from '@/lib/db/queries';
 import { SWRConfig } from 'swr';
+import { NextAuthProvider } from './providers';
+import { GithubSignInButton, GoogleSignInButton } from '@/components/ui/authButtons';
 
 export const metadata: Metadata = {
   title: 'Huncy',
@@ -26,7 +28,7 @@ export default function RootLayout({
       className={`bg-white dark:bg-gray-950 text-black dark:text-white ${manrope.className}`}
     >
       <body className="min-h-[100dvh] bg-gray-50">
-        <SWRConfig
+        {/* <SWRConfig
           value={{
             fallback: {
               // We do NOT await here
@@ -37,7 +39,13 @@ export default function RootLayout({
           }}
         >
           {children}
-        </SWRConfig>
+        </SWRConfig> */}
+        {/* <GoogleSignInButton />
+        <GithubSignInButton /> */}
+        <NextAuthProvider>
+          {/* <TwitterNavbar /> */}
+          {children}
+        </NextAuthProvider>
       </body>
     </html>
   );

@@ -16,8 +16,75 @@ import { signOut } from '@/app/(login)/actions';
 import { useRouter } from 'next/navigation';
 import { User } from '@/lib/db/schema';
 import useSWR, { mutate } from 'swr';
+import { GithubSignInButton, GoogleSignInButton, AuthButtons } from '@/components/ui/authButtons';
+import { useSession } from 'next-auth/react';
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
+
+// Debug component to check session data
+function DebugSession() {
+  const { data: session, status } = useSession();
+  const [bearerToken, setBearerToken] = useState<string | null>(null);
+  const [headers, setHeaders] = useState<any>(null);
+  
+  console.log('Session status:', status);
+  console.log('Session data:', session);
+  console.log('Access token:', (session as any)?.accessToken);
+
+  const testTokenRetrieval = async () => {
+    try {
+      const { getBearerToken, getAuthHeaders } = await import('@/lib/auth/token-storage');
+      const token = await getBearerToken();
+      setBearerToken(token);
+      
+      const authHeaders = await getAuthHeaders();
+      setHeaders(authHeaders);
+    } catch (error) {
+      console.error('Token test failed:', error);
+      setBearerToken('ERROR: ' + error);
+    }
+  };
+  
+  return (
+    <div className="p-4 bg-gray-100 m-4 rounded">
+      <h3 className="font-bold mb-2">Debug Session Info</h3>
+      <div className="text-xs">
+        <p><strong>Status:</strong> {status}</p>
+        <p><strong>User ID:</strong> {session?.user?.id || 'None'}</p>
+        <p><strong>Email:</strong> {session?.user?.email || 'None'}</p>
+        <p><strong>Access Token:</strong> {(session as any)?.accessToken ? 'Present' : 'Missing'}</p>
+        
+        <div className="mt-3">
+          <button 
+            onClick={testTokenRetrieval}
+            className="bg-blue-500 text-white px-2 py-1 rounded text-xs"
+          >
+            Test Bearer Token
+          </button>
+          
+          {bearerToken !== null && (
+            <div className="mt-2 p-2 bg-yellow-100 rounded">
+              <p><strong>Bearer Token:</strong> {bearerToken || 'null'}</p>
+            </div>
+          )}
+          
+          {headers && (
+            <div className="mt-2 p-2 bg-green-100 rounded">
+              <p><strong>Auth Headers:</strong></p>
+              <pre className="text-xs">{JSON.stringify(headers, null, 2)}</pre>
+            </div>
+          )}
+        </div>
+      </div>
+      <details className="mt-2">
+        <summary className="cursor-pointer text-blue-500">Show Full Session</summary>
+        <pre className="bg-white p-2 rounded mt-2 text-xs overflow-auto">
+          {JSON.stringify(session, null, 2)}
+        </pre>
+      </details>
+    </div>
+  );
+}
 
 function UserMenu() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -33,15 +100,8 @@ function UserMenu() {
   if (!user) {
     return (
       <>
-        <Link
-          href="/pricing"
-          className="text-sm font-medium text-gray-700 hover:text-gray-900"
-        >
-          Pricing
-        </Link>
-        <Button asChild className="rounded-full">
-          <Link href="/sign-up">Sign Up</Link>
-        </Button>
+        <GoogleSignInButton />
+        <GithubSignInButton />
       </>
     );
   }
@@ -95,8 +155,8 @@ function Header() {
           <span className="ml-2 text-xl font-semibold text-gray-900">Huncy</span>
         </Link>
         <div className="flex items-center space-x-4">
-          <Suspense fallback={<div className="h-9" />}>
-            <UserMenu />
+          <Suspense fallback={<div className="h-12 w-12 bg-gray-200 rounded-full animate-pulse" />}>
+            <AuthButtons />
           </Suspense>
         </div>
       </div>
@@ -108,6 +168,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <section className="flex flex-col min-h-screen">
       <Header />
+      {/* <DebugSession /> */}
       {children}
     </section>
   );

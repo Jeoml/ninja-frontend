@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import ReactMarkdown, { Options } from "react-markdown";
+import { getAuthHeaders } from '@/lib/auth/token-storage';
 
 // Types
 interface Message {
@@ -158,18 +159,6 @@ const useChat = ({
     setInput(e.target.value);
   };
 
-  // Function to get JWT token from localStorage or cookies
-  const getAuthToken = (): string | null => {
-    // Option 1: From localStorage
-    return localStorage.getItem('authToken');
-    
-    // Option 2: From cookies (if you store it there)
-    // return document.cookie
-    //   .split('; ')
-    //   .find(row => row.startsWith('authToken='))
-    //   ?.split('=')[1] || null;
-  };
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!input.trim() || isLoading) return;
@@ -185,22 +174,13 @@ const useChat = ({
     setIsLoading(true);
 
     try {
-      const authToken = getAuthToken();
+      // Get authenticated headers using NextAuth session
+      const headers = await getAuthHeaders();
       
       console.log("Making request to:", api);
       console.log("Request body:", {
         messages: [...messages, userMessage],
       });
-
-      const headers: Record<string, string> = {
-        "Content-Type": "application/json",
-        "Accept": "application/json",
-      };
-
-      // Add Authorization header if token exists
-      if (authToken) {
-        headers.Authorization = `Bearer ${authToken}`;
-      }
 
       const response = await fetch(api, {
         method: "POST",
