@@ -51,7 +51,7 @@ export async function POST(req: NextRequest) {
       return Response.json(
         { 
           error: 'RATE_LIMIT_EXCEEDED',
-          message: 'You have exceeded the rate limit. Please sign in to continue without restrictions.'
+          message: 'You have exceeded the rate limit. Three Requests per Minute for unauthorized users 😅. Please sign in to continue without restrictions.'
         },
         { status: 429 }
       );
