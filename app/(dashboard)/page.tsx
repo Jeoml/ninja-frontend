@@ -217,37 +217,22 @@ export default function HomePage() {
               </div> */}
             </div>
           </div>
-          <div className="py-16 bg-white">
+            <div className="py-16 bg-white">
             {/* Image Carousel - will stack below on mobile, side by side on lg+ */}
-            <div className="mt-12 lg:mt-0 flex justify-center">
+            <div className="lg:mt-0 flex justify-center items-end h-full">
               <div className="relative bg-white">
-                <div className="w-80 h-96 flex items-center justify-center">
-                  <Image
-                    src={publicImages[currentImageIndex].src}
-                    alt={publicImages[currentImageIndex].alt}
-                    width={320}
-                    height={640}
-                    className="object-contain duration-500"
-                  />
-                </div>
-
-                {/* Dots indicator */}
-                <div className="flex justify-center mt-4 space-x-2">
-                  {publicImages.map((_, index) => (
-                    <button
-                      key={index}
-                      className={`w-2 h-2 rounded-full transition-colors ${
-                        index === currentImageIndex
-                          ? "bg-gray-400"
-                          : "bg-gray-300"
-                      }`}
-                      onClick={() => setCurrentImageIndex(index)}
-                    />
-                  ))}
-                </div>
+              <div className="w-96 h-[500px] flex items-end justify-center">
+              <Image
+              src={publicImages[currentImageIndex].src}
+              alt={publicImages[currentImageIndex].alt}
+              width={400}
+              height={500}
+              className="object-contain"
+              />
+              </div>
               </div>
             </div>
-          </div>
+            </div>
         </div>
       </section>
     </main>
