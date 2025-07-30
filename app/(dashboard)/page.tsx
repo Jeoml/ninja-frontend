@@ -2,6 +2,13 @@ import { Button } from '@/components/ui/button';
 import { ArrowRight, MessageCircle, Instagram, Bot, ShoppingCart, RefreshCw } from 'lucide-react';
 import { Terminal } from './terminal';
 import Agent from '@/app/api/agent';
+import Image from 'next/image';
+
+// Images from public folder
+const publicImages = [
+  { src: '/huncywhatsapp.png', alt: 'Huncy WhatsApp' },
+  { src: '/huncyinstagram.png', alt: 'Huncy Instagram' }
+];
 
 export default function HomePage() {
   return (
@@ -179,6 +186,30 @@ export default function HomePage() {
                 </Button>
               </a>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Image Gallery Section */}
+      <section className="py-16 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-gray-900">
+              Our Partners & Integrations
+            </h2>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-center justify-items-center">
+            {publicImages.map((image, index) => (
+              <div key={index} className="flex items-center justify-center p-4">
+                <Image
+                  src={image.src}
+                  alt={image.alt}
+                  width={120}
+                  height={120}
+                  className="object-contain"
+                />
+              </div>
+            ))}
           </div>
         </div>
       </section>
