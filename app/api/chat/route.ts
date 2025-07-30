@@ -61,8 +61,8 @@ export async function POST(req: NextRequest) {
       console.log('Database reconnecting after high high load');
       return Response.json(
         { 
-          error: 'SERVER_REINITIALIZING',
-          message: 'Server is reinitializing after high load. Please try again in a few moments.'
+          error: 'DB_RECONNECTING',
+          message: 'Database is reconnecting. Please try again in a few moments.'
         },
         { status: 503 }
       );
