@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import ReactMarkdown, { Options } from "react-markdown";
+import { toast } from 'sonner';
 import { getAuthHeaders } from '@/lib/auth/token-storage';
 
 // Types
@@ -139,7 +140,7 @@ const ProjectOverview = ({
     </motion.div>
   );
 };
-// Simple useChat hook implementation
+// Custom useChat hook with proper 429 handling
 const useChat = ({
   api,
   onError,
@@ -174,14 +175,8 @@ const useChat = ({
     setIsLoading(true);
 
     try {
-      // Get authenticated headers using NextAuth session
       const headers = await getAuthHeaders();
       
-      console.log("Making request to:", api);
-      console.log("Request body:", {
-        messages: [...messages, userMessage],
-      });
-
       const response = await fetch(api, {
         method: "POST",
         headers,
@@ -190,17 +185,31 @@ const useChat = ({
         }),
       });
 
-      console.log("Response status:", response.status);
+      // Check for 429 rate limit specifically
+      if (response.status === 429) {
+        const errorData = await response.json();
+        console.log("429 error data:", errorData);
+        
+        // Show toast with sign-in action
+        toast.error('Rate limit exceeded!', {
+          description: 'Please sign in to continue without restrictions.',
+          // action: {
+          //   label: 'Sign In',
+          //   onClick: () => {
+          //     window.location.href = '/';
+          //   }
+          // },
+          duration: 10000, // Show for 10 seconds
+        });
+        
+        return; // Don't add any message to chat
+      }
 
       if (!response.ok) {
-        const errorText = await response.text();
-        console.log("Error response body:", errorText);
         throw new Error(`HTTP error! status: ${response.status}`);
       }
 
-      // Handle JSON response
       const data = await response.json();
-      console.log("Response data:", data);
       
       const assistantMessage: Message = {
         id: generateId(),
@@ -211,17 +220,14 @@ const useChat = ({
       setMessages(prev => [...prev, assistantMessage]);
       onFinish?.(assistantMessage);
     } catch (error) {
-      console.error("Detailed error:", error);
+      console.error("Chat error:", error);
       const errorMessage = error instanceof Error ? error : new Error("Unknown error");
       onError?.(errorMessage);
       
-      // Add an error message to the chat
-      const errorAssistantMessage: Message = {
-        id: generateId(),
-        role: "assistant",
-        content: `Error: ${error instanceof Error ? error.message : 'Unknown error occurred'}`,
-      };
-      setMessages(prev => [...prev, errorAssistantMessage]);
+      // Show generic error toast
+      toast.error('Something went wrong', {
+        description: error instanceof Error ? error.message : 'Unknown error occurred'
+      });
     } finally {
       setIsLoading(false);
     }
@@ -301,7 +307,7 @@ const Agent: React.FC<AgentProps> = ({
 }) => {
   const { messages, input, handleInputChange, handleSubmit, isLoading } =
     useChat({
-      api: "/api/chat",
+      api: apiEndpoint,
       onError: onError || ((error) => {
         console.error("Chat error:", error);
       }),

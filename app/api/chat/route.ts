@@ -39,11 +39,23 @@ export async function POST(req: NextRequest) {
     
     const response = await fetch(backendUrl, {
       method: 'POST',
-      headers: authHeaders, // This includes both Content-Type and Authorization headers
+      headers: authHeaders,
       body: JSON.stringify(requestPayload),
     });
 
     console.log('Backend response status:', response.status);
+
+    // Handle 429 Rate Limiting specifically
+    if (response.status === 429) {
+      console.log('Rate limit exceeded - returning 429 response');
+      return Response.json(
+        { 
+          error: 'RATE_LIMIT_EXCEEDED',
+          message: 'You have exceeded the rate limit. Please sign in to continue without restrictions.'
+        },
+        { status: 429 }
+      );
+    }
 
     if (!response.ok) {
       const errorText = await response.text();

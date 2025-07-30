@@ -5,6 +5,7 @@ import { getUser, getTeamForUser } from '@/lib/db/queries';
 import { SWRConfig } from 'swr';
 import { NextAuthProvider } from './providers';
 import { GithubSignInButton, GoogleSignInButton } from '@/components/ui/authButtons';
+import { Toaster } from 'sonner';
 
 export const metadata: Metadata = {
   title: 'Huncy',
@@ -46,6 +47,7 @@ export default function RootLayout({
           {/* <TwitterNavbar /> */}
           {children}
         </NextAuthProvider>
+        <Toaster position="top-right" richColors />
       </body>
     </html>
   );
