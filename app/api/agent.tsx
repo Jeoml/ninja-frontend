@@ -124,7 +124,7 @@ const ProjectOverview = ({
               Welcome to your AI customer service assistant! 📦 I help track{" "}
               <span className="text-blue-500 font-medium">any order</span>{" "}
               with real-time status, delivery location, and agent contact info.{" "}
-              Try asking "Where is my order #25?" or "Contact for order #42" to see how I can help! 🚚
+              Try asking "Where is my order with id 25?" or "Delivery person Contact for order with id 42" to see how I can help! 🚚
             </>
           )}
         </p>
