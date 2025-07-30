@@ -120,10 +120,10 @@ const ProjectOverview = ({
         <p>
           {title || (
             <>
-              Welcome to your AI customer service assistant! Ask me about any{" "}
-              <span className="text-blue-500 font-medium">order from #1 to #50</span>{" "}
-              to get real-time updates on order status, delivery tracking, and shipping information.{" "}
-              Try asking "Where is my order #25?" or "What's the status of order 42?" to see how I can help!
+              Welcome to your AI customer service assistant! 📦 I help track{" "}
+              <span className="text-blue-500 font-medium">any order</span>{" "}
+              with real-time status, delivery location, and agent contact info.{" "}
+              Try asking "Where is my order #25?" or "Contact for order #42" to see how I can help! 🚚
             </>
           )}
         </p>
