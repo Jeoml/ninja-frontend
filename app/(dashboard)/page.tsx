@@ -50,17 +50,28 @@ export default function HomePage() {
                 handle order queries, refund requests, and more across WhatsApp
                 and Instagram messaging platforms.
               </p>
-              <div className="mt-8 sm:max-w-lg sm:mx-auto sm:text-center lg:text-left lg:mx-0">
-                <a href="https://www.linkedin.com/in/joel-t-110941240/">
-                  <Button
+                <div className="mt-8 sm:max-w-lg sm:mx-auto sm:text-center lg:text-left lg:mx-0">
+                <div className="flex flex-col sm:flex-row gap-4">
+                  <a href="https://www.linkedin.com/in/joel-t-110941240/">
+                    <Button
                     size="lg"
-                    className="text-lg rounded-full bg-indigo-500 hover:bg-orange-600"
-                  >
+                    className="text-lg rounded-full bg-black hover:bg-white text-white hover:text-black"
+                    >
                     Contact Us
                     <ArrowRight className="ml-2 h-5 w-5" />
-                  </Button>
-                </a>
-              </div>
+                    </Button>
+                  </a>
+                    <a href="/huncy_brochure_v1.pdf" download="huncy_brochure_v1.pdf">
+                    <Button
+                      size="lg"
+                      className="text-lg rounded-full bg-black hover:bg-white text-white hover:text-black"
+                    >
+                      Download Brochure
+                      <ArrowRight className="ml-2 h-5 w-5" />
+                    </Button>
+                    </a>
+                </div>
+                </div>
             </div>
             <div className="mt-12 relative sm:max-w-lg sm:mx-auto lg:mt-0 lg:max-w-none lg:mx-0 lg:col-span-6 lg:flex lg:items-center">
               {/* <Terminal /> */}
