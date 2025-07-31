@@ -134,7 +134,11 @@ const ProjectOverview = ({
           }
         </p>
         <p className="text-xs text-neutral-500 dark:text-neutral-400">
-          {helpText || "💡 Try: 'Where is my order #15?' or 'Status of order 33' - Orders 1-50 available for demo!"}
+          {helpText || (
+            <>
+              💡 Try: 'Where is my order #15?' or 'Status of order 33' - <span className="font-bold text-red-500">Orders 1-50 available for demo!</span> If you encounter any errors, please resend your message (sorry for the inconvenience).
+            </>
+          )}
         </p>
       </div>
     </motion.div>
