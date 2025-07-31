@@ -129,17 +129,25 @@ const ProjectOverview = ({
           )}
         </p>
         <p>
-          {description || 
-            "The backend handles complex agentic workflows including order tracking, customer support, and database queries. It can be easily extended to support more use cases."
-          }
+            {description ? (
+            <span className="text-blue-600 dark:text-blue-400">{description}</span>
+            ) : (
+            <span>
+              <span className="text-red-500 font-semibold">If you get a 500 Server Error</span>
+                <span className="text-neutral-700 dark:text-neutral-300">, don't worry! My <u>Demo Server</u> sleeps after inactivity, so it takes a moment to wake up.</span>
+              <br />
+              <span className="text-neutral-700 dark:text-neutral-300">Refresh ⏭️ Say Hi to wake it up ⏭️ Ask Anything.</span>
+              <span className="text-yellow-500">⏳</span>
+            </span>
+            )}
         </p>
-        <p className="text-xs text-neutral-500 dark:text-neutral-400">
+        {/* <p className="text-xs text-neutral-500 dark:text-neutral-400">
           {helpText || (
             <>
               💡 Try: 'Where is my order #15?' or 'Status of order 33' - <span className="font-bold text-red-500">Orders 1-50 available for demo!</span> If you encounter any errors, please resend your message (sorry for the inconvenience).
             </>
           )}
-        </p>
+        </p> */}
       </div>
     </motion.div>
   );
