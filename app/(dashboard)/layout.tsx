@@ -152,7 +152,7 @@ function Header() {
             width={24}
             priority
           />
-          <span className="ml-2 text-xl font-semibold text-gray-900">Huncy</span>
+          {/* <span className="ml-2 text-xl font-semibold text-gray-900">Huncy</span> */}
         </Link>
         <div className="flex items-center space-x-4">
           <Suspense fallback={<div className="h-12 w-12 bg-gray-200 rounded-full animate-pulse" />}>
