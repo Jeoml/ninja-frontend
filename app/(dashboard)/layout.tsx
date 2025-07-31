@@ -147,9 +147,9 @@ function Header() {
           <Image
             src="/huncy_bgremoved.png"
             alt="Huncy Logo"
-            className="h-10 w-10"
-            height={24}
-            width={24}
+            className="h-10"
+            height={40}
+            width={0}
             priority
           />
           {/* <span className="ml-2 text-xl font-semibold text-gray-900">Huncy</span> */}
