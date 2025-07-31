@@ -52,7 +52,7 @@ export default function HomePage() {
               </p>
                 <div className="mt-8 sm:max-w-lg sm:mx-auto sm:text-center lg:text-left lg:mx-0">
                 <div className="flex flex-col sm:flex-row gap-4">
-                  <a href="https://www.linkedin.com/in/joel-t-110941240/">
+                  <a href="https://x.com/joel_th_10">
                     <Button
                     size="lg"
                     className="text-lg rounded-full bg-black hover:bg-white text-white hover:text-black"
