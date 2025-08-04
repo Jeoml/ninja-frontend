@@ -133,7 +133,7 @@ const ProjectOverview = ({
             <span className="text-blue-600 dark:text-blue-400">{description}</span>
             ) : (
             <span>
-              <span className="text-red-500 font-semibold">Only orders 1 to 50 exist in demo database</span>
+              <span className="text-red-500 font-semibold">Only orders 1 to 50 exist in demo database. </span>
                 <span className="text-neutral-700 dark:text-neutral-300">If you get an error, don't worry! My <u>Demo Server</u> sleeps after inactivity, so it takes a moment to wake up.</span>
               <br />
               <span className="text-neutral-700 dark:text-neutral-300">Refresh ⏭️ Say Hi to wake it up ⏭️ Ask Anything.</span>
