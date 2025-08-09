@@ -82,6 +82,9 @@ const ProjectOverview = ({
       exit={{ opacity: 0, y: -20 }}
       transition={{ duration: 0.5 }}
     >
+      <div className="mb-2 px-4 py-2 rounded bg-yellow-100 border border-yellow-300 text-yellow-900 text-sm dark:bg-yellow-900 dark:border-yellow-700 dark:text-yellow-100">
+        <strong>Scheduled Maintenance Notice:</strong> Our servers will be undergoing updates and maintenance from <span className="font-semibold">9th August 6:00 AM</span> to <span className="font-semibold">12th August 6:00 AM</span> (local time). During this period, services may be unavailable. We appreciate your understanding and apologize for any inconvenience caused.
+      </div>
       <div className="border rounded-lg p-6 flex flex-col gap-4 text-neutral-600 text-sm bg-gray-100 border-gray-200 dark:text-neutral-300 dark:border-neutral-600 dark:bg-gray-800">
         {/* <p>
           {title || (
