@@ -348,6 +348,13 @@ export const deleteAccount = validatedActionWithUser(
   async (data, _, user) => {
     const { password } = data;
 
+    if (!db) {
+      return {
+        password,
+        error: 'Database not available. Please contact support.'
+      };
+    }
+
     const isPasswordValid = await comparePasswords(password, user.passwordHash);
     if (!isPasswordValid) {
       return {
