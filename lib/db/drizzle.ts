@@ -7,7 +7,7 @@ dotenv.config();
 
 // Make database optional for development/demo purposes
 let client: ReturnType<typeof postgres> | null = null;
-let db: ReturnType<typeof drizzle> | null = null;
+let db: ReturnType<typeof drizzle<typeof schema>> | null = null;
 
 if (process.env.POSTGRES_URL) {
   client = postgres(process.env.POSTGRES_URL);
