@@ -20,7 +20,7 @@ export async function getUser() {
   if (new Date(sessionData.expires) < new Date()) {
     return null;
   }
-  const user = await db
+  const user = await db!
     .select()
     .from(users)
     .where(and(eq(users.id, sessionData.user.id), isNull(users.deletedAt)))
@@ -37,7 +37,7 @@ export async function getUserWithTeam(userId: number) {
   if (!db) {
     return null;
   }
-  const result = await db
+  const result = await db!
     .select({
       user: users,
       teamId: teamMembers.teamId
@@ -54,7 +54,7 @@ export async function getActivityLogs() {
   if (!user || !db) {
     throw new Error('User not authenticated or database not available');
   }
-  return await db
+  return await db!
     .select({
       id: activityLogs.id,
       action: activityLogs.action,
@@ -74,7 +74,7 @@ export async function getTeamForUser() {
   if (!user || !db) {
     return null;
   }
-  const result = await db.query.teamMembers.findFirst({
+  const result = await db!.query.teamMembers.findFirst({
     where: eq(teamMembers.userId, user.id),
     with: {
       team: {
