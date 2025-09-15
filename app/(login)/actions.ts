@@ -33,7 +33,7 @@ async function logActivity(
   type: ActivityType,
   ipAddress?: string
 ) {
-  if (teamId === null || teamId === undefined) {
+  if (teamId === null || teamId === undefined || !db) {
     return;
   }
   const newActivity: NewActivityLog = {
@@ -52,6 +52,14 @@ const signInSchema = z.object({
 
 export const signIn = validatedAction(signInSchema, async (data, formData) => {
   const { email, password } = data;
+
+  if (!db) {
+    return {
+      error: 'Database not available. Please contact support.',
+      email,
+      password
+    };
+  }
 
   const userWithTeam = await db
     .select({
@@ -119,6 +127,14 @@ const signUpSchema = z.object({
 
 export const signUp = validatedAction(signUpSchema, async (data, formData) => {
   const { email, password, inviteId } = data;
+
+  if (!db) {
+    return {
+      error: 'Database not available. Please contact support.',
+      email,
+      password
+    };
+  }
 
   const existingUser = await db
     .select()
@@ -243,6 +259,11 @@ export const signUp = validatedAction(signUpSchema, async (data, formData) => {
 });
 
 export async function signOut() {
+  if (!db) {
+    (await cookies()).delete('session');
+    return;
+  }
+  
   const user = (await getUser()) as User;
   const userWithTeam = await getUserWithTeam(user.id);
   await logActivity(userWithTeam?.teamId, user.id, ActivityType.SIGN_OUT);

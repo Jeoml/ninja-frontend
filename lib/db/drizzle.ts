@@ -5,9 +5,15 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-if (!process.env.POSTGRES_URL) {
-  throw new Error('POSTGRES_URL environment variable is not set');
+// Make database optional for development/demo purposes
+let client: ReturnType<typeof postgres> | null = null;
+let db: ReturnType<typeof drizzle> | null = null;
+
+if (process.env.POSTGRES_URL) {
+  client = postgres(process.env.POSTGRES_URL);
+  db = drizzle(client, { schema });
+} else {
+  console.warn('POSTGRES_URL environment variable is not set. Database operations will be disabled.');
 }
 
-export const client = postgres(process.env.POSTGRES_URL);
-export const db = drizzle(client, { schema });
+export { client, db };

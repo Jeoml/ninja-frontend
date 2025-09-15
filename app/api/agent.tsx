@@ -77,77 +77,39 @@ const ProjectOverview = ({
 }) => {
   return (
     <motion.div
-      className="w-full max-w-[600px] my-4"
+      className="w-full"
       initial={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -20 }}
       transition={{ duration: 0.5 }}
     >
-      {/* <div className="mb-2 px-4 py-2 rounded bg-yellow-100 border border-yellow-300 text-yellow-900 text-sm dark:bg-yellow-900 dark:border-yellow-700 dark:text-yellow-100">
-        <strong>Scheduled Maintenance Notice:</strong> Our servers will be undergoing updates and maintenance from <span className="font-semibold">12th August 6:00 AM IST</span> to <span className="font-semibold">15th August 6:00 AM IST</span>. During this period, services may be unavailable. We appreciate your understanding and apologize for any inconvenience caused.
-      </div> */}
-      <div className="border rounded-lg p-6 flex flex-col gap-4 text-neutral-600 text-sm bg-gray-100 border-gray-200 dark:text-neutral-300 dark:border-neutral-600 dark:bg-gray-800">
-        {/* <p>
-          {title || (
-            <>
-              This AI chat assistant is powered by a custom{" "}
-              <span className="text-blue-500 font-medium">agentic backend</span>{" "}
-              built with{" "}
-              <a
-                href="https://langchain-ai.github.io/langgraph/"
-                className="text-blue-500"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                LangGraph
-              </a>
-              . The frontend uses{" "}
-              <a
-                href="https://sdk.vercel.ai/docs/reference/ai-sdk-ui/use-chat"
-                className="text-blue-500"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                useChat
-              </a>{" "}
-              hook to provide a seamless chat experience with your intelligent backend agents.
-            </>
-          )}
-        </p>
-        <p>
-          {description || 
-            "The backend handles complex agentic workflows including order tracking, customer support, and database queries. It can be easily extended to support more use cases."
-          }
-        </p>
-        <p className="text-xs text-neutral-500 dark:text-neutral-400">
-          {helpText || "💡 Try asking about order status, delivery tracking, or any customer service questions!"}
-        </p> */}
-        <p>
-          {title || (
-            <>
-              Welcome to your AI customer service assistant! 📦 I help track{" "}
-              <span className="text-blue-500 font-medium">any order</span>{" "}
-              with real-time status, delivery location, and agent contact info.{" "}
-              Try asking "Where is my order with id 25?" or "Delivery person Contact for order with id 42" to see how I can help! 🚚
-            </>
-          )}
-        </p>
-        <p>
-            {description ? (
-            <span className="text-blue-600 dark:text-blue-400">{description}</span>
-            ) : (
-            <span>
-              <span className="text-red-500 font-semibold">Only orders 1 to 50 exist in demo database. </span>
-              <br />
-            </span>
-            )}
-        </p>
-        {/* <p className="text-xs text-neutral-500 dark:text-neutral-400">
-          {helpText || (
-            <>
-              💡 Try: 'Where is my order #15?' or 'Status of order 33' - <span className="font-bold text-red-500">Orders 1-50 available for demo!</span> If you encounter any errors, please resend your message (sorry for the inconvenience).
-            </>
-          )}
-        </p> */}
+      <div className="bg-gradient-to-r from-indigo-50 to-blue-50 dark:from-indigo-900/20 dark:to-blue-900/20 rounded-xl p-6 border border-indigo-100 dark:border-indigo-800">
+        <div className="flex items-start gap-4">
+          <div className="flex-shrink-0 w-12 h-12 bg-indigo-500 rounded-xl flex items-center justify-center">
+            <svg className="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+            </svg>
+          </div>
+          <div className="flex-1 space-y-3">
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+              AI Customer Service Assistant
+            </h3>
+            <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
+              {title || (
+                <>
+                  Welcome! 📦 I help track <span className="text-indigo-600 dark:text-indigo-400 font-medium">any order</span> with real-time status, delivery location, and agent contact info. Try asking "Where is my order with id 25?" or "Delivery person Contact for order with id 42" to see how I can help! 🚚
+                </>
+              )}
+            </p>
+            <div className="flex items-center gap-2 text-xs">
+              <span className="bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300 px-2 py-1 rounded-full font-medium">
+                Demo Mode
+              </span>
+              <span className="text-gray-600 dark:text-gray-400">
+                Orders 1-50 available for testing
+              </span>
+            </div>
+          </div>
+        </div>
       </div>
     </motion.div>
   );
@@ -254,8 +216,8 @@ const useChat = ({
   };
 };
 
-// Assistant Message Component
-const AssistantMessage = ({ message }: { message: Message }) => {
+// Message Components
+const BotMessage = ({ message }: { message: Message }) => {
   const MemoizedReactMarkdown: React.FC<Options> = React.memo(
     ReactMarkdown,
     (prevProps, nextProps) =>
@@ -263,46 +225,87 @@ const AssistantMessage = ({ message }: { message: Message }) => {
   );
 
   return (
-    <AnimatePresence mode="wait">
-      <motion.div
-        key={message.id}
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-        className="whitespace-pre-wrap font-mono text-sm text-neutral-800 dark:text-neutral-200 overflow-hidden"
-        id="markdown"
-      >
-        <div className="max-h-72 overflow-y-scroll">
-          <MemoizedReactMarkdown>
-            {message.content}
-          </MemoizedReactMarkdown>
+    <motion.div
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      className="flex items-start gap-3 mb-6"
+    >
+      {/* Bot Avatar */}
+      <div className="flex-shrink-0 w-10 h-10 bg-indigo-500 rounded-full flex items-center justify-center shadow-sm">
+        <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+        </svg>
+      </div>
+      
+      {/* Message Content */}
+      <div className="flex-1 max-w-[85%]">
+        <div className="bg-gray-50 dark:bg-gray-800 rounded-2xl rounded-tl-sm px-4 py-3 shadow-sm border border-gray-100 dark:border-gray-700">
+          <div className="text-sm text-gray-800 dark:text-gray-200 leading-relaxed prose prose-sm max-w-none prose-p:my-1">
+            <MemoizedReactMarkdown>
+              {message.content}
+            </MemoizedReactMarkdown>
+          </div>
         </div>
-      </motion.div>
-    </AnimatePresence>
+      </div>
+    </motion.div>
+  );
+};
+
+const UserMessage = ({ message }: { message: Message }) => {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      className="flex items-start gap-3 mb-6 justify-end"
+    >
+      {/* Message Content */}
+      <div className="flex-1 max-w-[85%] flex justify-end">
+        <div className="bg-indigo-500 rounded-2xl rounded-tr-sm px-4 py-3 shadow-sm">
+          <div className="text-sm text-white leading-relaxed">
+            {message.content}
+          </div>
+        </div>
+      </div>
+      
+      {/* User Avatar */}
+      <div className="flex-shrink-0 w-10 h-10 bg-gray-500 rounded-full flex items-center justify-center shadow-sm">
+        <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+        </svg>
+      </div>
+    </motion.div>
   );
 };
 
 // Loading Component
 const Loading = () => {
   return (
-    <AnimatePresence mode="wait">
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-        transition={{ type: "spring" }}
-        className="overflow-hidden flex justify-start items-center"
-      >
-        <div className="flex flex-row gap-2 items-center">
-          <div className="animate-spin dark:text-neutral-400 text-neutral-500">
-            <LoadingIcon />
-          </div>
-          <div className="text-neutral-500 dark:text-neutral-400 text-sm">
-            Thinking...
+    <motion.div
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      className="flex items-start gap-3 mb-6"
+    >
+      {/* Bot Avatar */}
+      <div className="flex-shrink-0 w-10 h-10 bg-indigo-500 rounded-full flex items-center justify-center shadow-sm">
+        <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+        </svg>
+      </div>
+      
+      {/* Message Content */}
+      <div className="flex-1 max-w-[85%]">
+        <div className="bg-gray-50 dark:bg-gray-800 rounded-2xl rounded-tl-sm px-4 py-3 shadow-sm border border-gray-100 dark:border-gray-700">
+          <div className="flex items-center gap-3">
+            <div className="animate-spin text-indigo-500">
+              <LoadingIcon />
+            </div>
+            <div className="text-sm text-gray-600 dark:text-gray-300">
+              Thinking...
+            </div>
           </div>
         </div>
-      </motion.div>
-    </AnimatePresence>
+      </div>
+    </motion.div>
   );
 };
 
@@ -328,82 +331,71 @@ const Agent: React.FC<AgentProps> = ({
       }),
     });
 
-  const [isExpanded, setIsExpanded] = useState(false);
-
-  useEffect(() => {
-    if (messages.length > 0) setIsExpanded(true);
-  }, [messages]);
-
-  const lastUserMessage = messages
-    .filter((m) => m.role === "user")
-    .slice(-1)[0];
-  const lastAssistantMessage = messages
-    .filter((m) => m.role === "assistant")
-    .slice(-1)[0];
-
   return (
-    <div className={cn(
-      "w-full",
-      className
-    )}>
-      <div className="flex flex-col items-center w-full max-w-[500px] mx-auto">
-        <ProjectOverview 
-          title={projectTitle}
-          description={projectDescription}
-          helpText={helpText}
-        />
-        <motion.div
-          animate={{
-            minHeight: isExpanded ? 200 : 0,
-            padding: isExpanded ? 12 : 0,
-          }}
-          transition={{
-            type: "spring",
-            bounce: 0.5,
-          }}
-          className={cn(
-            "rounded-lg w-full",
-            isExpanded ? "bg-neutral-200 dark:bg-neutral-800" : "bg-transparent"
-          )}
-        >
-          <div className="flex flex-col w-full justify-between gap-2">
-            <form onSubmit={handleSubmit} className="flex space-x-2">
-              <Input
-                className="border rounded-lg bg-neutral-100 text-base w-full text-neutral-700 dark:bg-neutral-700 dark:placeholder:text-neutral-400 dark:text-neutral-300"
-                minLength={3}
-                required
-                value={input}
-                placeholder={placeholder}
-                onChange={handleInputChange}
-                disabled={isLoading}
-              />
-            </form>
-            <motion.div
-              transition={{
-                type: "spring",
-              }}
-              className="min-h-fit flex flex-col gap-2"
-            >
-              <AnimatePresence>
-                {isLoading ? (
-                  <div className="px-2 min-h-12">
-                    <div className="dark:text-neutral-400 text-neutral-500 text-sm w-fit mb-1">
-                      {lastUserMessage?.content}
-                    </div>
-                    <Loading />
-                  </div>
-                ) : lastAssistantMessage ? (
-                  <div className="px-2 min-h-12">
-                    <div className="dark:text-neutral-400 text-neutral-500 text-sm w-fit mb-1">
-                      {lastUserMessage?.content}
-                    </div>
-                    <AssistantMessage message={lastAssistantMessage} />
-                  </div>
-                ) : null}
-              </AnimatePresence>
-            </motion.div>
+    <div className={cn("w-full h-full flex flex-col bg-white dark:bg-gray-900", className)}>
+      {/* Welcome Message */}
+      {messages.length === 0 && (
+        <div className="p-6 border-b border-gray-100 dark:border-gray-800">
+          <ProjectOverview 
+            title={projectTitle}
+            description={projectDescription}
+            helpText={helpText}
+          />
+        </div>
+      )}
+      
+      {/* Chat Messages Area */}
+      <div className="flex-1 overflow-y-auto p-6 bg-gray-50 dark:bg-gray-900" style={{ minHeight: messages.length === 0 ? '400px' : '300px' }}>
+        {messages.map((message) => (
+          message.role === "assistant" ? (
+            <BotMessage key={message.id} message={message} />
+          ) : (
+            <UserMessage key={message.id} message={message} />
+          )
+        ))}
+        
+        {/* Loading indicator */}
+        {isLoading && <Loading />}
+        
+        {/* Empty state */}
+        {messages.length === 0 && (
+          <div className="flex items-center justify-center h-full">
+            <div className="text-center text-gray-500 dark:text-gray-400">
+              <svg className="w-12 h-12 mx-auto mb-4 text-gray-300 dark:text-gray-600" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M20 2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h4l4 4 4-4h4c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/>
+              </svg>
+              <p className="text-sm">Start a conversation by typing a message below</p>
+            </div>
           </div>
-        </motion.div>
+        )}
+      </div>
+      
+      {/* Input Area */}
+      <div className="border-t border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 p-4">
+        <form onSubmit={handleSubmit} className="flex gap-3">
+          <Input
+            className="flex-1 border-2 rounded-xl bg-white dark:bg-gray-800 text-base text-gray-700 dark:text-gray-300 border-gray-200 dark:border-gray-600 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 dark:focus:ring-indigo-800 transition-all px-4 py-3"
+            value={input}
+            placeholder={placeholder}
+            onChange={handleInputChange}
+            disabled={isLoading}
+          />
+          <button
+            type="submit"
+            disabled={isLoading || !input.trim()}
+            className="px-5 py-3 bg-indigo-500 hover:bg-indigo-600 disabled:bg-gray-300 disabled:cursor-not-allowed text-white rounded-xl transition-all duration-200 flex items-center justify-center min-w-[60px] shadow-sm hover:shadow-md disabled:shadow-none"
+          >
+            {isLoading ? (
+              <div className="animate-spin text-white">
+                <LoadingIcon />
+              </div>
+            ) : (
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+              </svg>
+            )}
+          </button>
+        </form>
       </div>
     </div>
   );

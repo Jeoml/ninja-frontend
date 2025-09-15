@@ -6,7 +6,7 @@ import { verifyToken } from '@/lib/auth/session';
 
 export async function getUser() {
   const sessionCookie = (await cookies()).get('session');
-  if (!sessionCookie || !sessionCookie.value) {
+  if (!sessionCookie || !sessionCookie.value || !db) {
     return null;
   }
   const sessionData = await verifyToken(sessionCookie.value);
@@ -34,6 +34,9 @@ export async function getUser() {
 // Removed getTeamByStripeCustomerId and updateTeamSubscription functions
 
 export async function getUserWithTeam(userId: number) {
+  if (!db) {
+    return null;
+  }
   const result = await db
     .select({
       user: users,
@@ -48,8 +51,8 @@ export async function getUserWithTeam(userId: number) {
 
 export async function getActivityLogs() {
   const user = await getUser();
-  if (!user) {
-    throw new Error('User not authenticated');
+  if (!user || !db) {
+    throw new Error('User not authenticated or database not available');
   }
   return await db
     .select({
@@ -68,7 +71,7 @@ export async function getActivityLogs() {
 
 export async function getTeamForUser() {
   const user = await getUser();
-  if (!user) {
+  if (!user || !db) {
     return null;
   }
   const result = await db.query.teamMembers.findFirst({
