@@ -281,6 +281,15 @@ export const updatePassword = validatedActionWithUser(
   async (data, _, user) => {
     const { currentPassword, newPassword, confirmPassword } = data;
 
+    if (!db) {
+      return {
+        currentPassword,
+        newPassword,
+        confirmPassword,
+        error: 'Database not available. Please contact support.'
+      };
+    }
+
     const isPasswordValid = await comparePasswords(
       currentPassword,
       user.passwordHash
@@ -389,6 +398,11 @@ export const updateAccount = validatedActionWithUser(
   updateAccountSchema,
   async (data, _, user) => {
     const { name, email } = data;
+    
+    if (!db) {
+      return { name, error: 'Database not available. Please contact support.' };
+    }
+    
     const userWithTeam = await getUserWithTeam(user.id);
 
     await Promise.all([
@@ -408,6 +422,11 @@ export const removeTeamMember = validatedActionWithUser(
   removeTeamMemberSchema,
   async (data, _, user) => {
     const { memberId } = data;
+    
+    if (!db) {
+      return { error: 'Database not available. Please contact support.' };
+    }
+    
     const userWithTeam = await getUserWithTeam(user.id);
 
     if (!userWithTeam?.teamId) {
@@ -442,6 +461,11 @@ export const inviteTeamMember = validatedActionWithUser(
   inviteTeamMemberSchema,
   async (data, _, user) => {
     const { email, role } = data;
+    
+    if (!db) {
+      return { error: 'Database not available. Please contact support.' };
+    }
+    
     const userWithTeam = await getUserWithTeam(user.id);
 
     if (!userWithTeam?.teamId) {
