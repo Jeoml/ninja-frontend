@@ -5,8 +5,8 @@ import { NextAuthProvider } from './providers';
 import { Toaster } from 'sonner';
 
 export const metadata: Metadata = {
-  title: 'Huncy',
-  description: 'Get started with Huncy the AI assistant for your Business.'
+  title: 'Ninja',
+  description: 'Get started with Ninja the AI assistant for your Exam.'
 };
 
 export const viewport: Viewport = {

@@ -2,7 +2,7 @@
 services:
   postgres:
     image: postgres:16.4-alpine
-    container_name: huncy_webapp
+    container_name: ninja_webapp
     environment:
       POSTGRES_DB: postgres
       POSTGRES_USER: postgres
