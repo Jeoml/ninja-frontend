@@ -154,7 +154,7 @@ const useChat = ({
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          messages: [...messages, userMessage],
+          message: userMessage.content,
         }),
       });
 
@@ -310,7 +310,7 @@ const Loading = () => {
 
 // Main Agent Component
 const Agent: React.FC<AgentProps> = ({
-  apiEndpoint = "/api/chat",
+  apiEndpoint = "https://ninja-production-8034.up.railway.app/ai-agents/langgraph/start-quiz",
   placeholder = "Ask me anything...",
   projectTitle,
   projectDescription,
