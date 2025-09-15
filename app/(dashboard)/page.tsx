@@ -42,7 +42,7 @@ export default function HomePage() {
                       Download Brochure
                       <ArrowRight className="ml-2 h-5 w-5" />
                     </Button>
-                    </a>
+                  </a>
                 </div>
                 </div>
             </div>

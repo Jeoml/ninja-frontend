@@ -373,7 +373,8 @@ const Agent: React.FC<AgentProps> = ({
       {/* Input Area */}
       <div className="border-t border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 p-4">
         <form onSubmit={handleSubmit} className="flex gap-3">
-          <Input
+          <input
+            type="text"
             className="flex-1 border-2 rounded-xl bg-white dark:bg-gray-800 text-base text-gray-700 dark:text-gray-300 border-gray-200 dark:border-gray-600 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 dark:focus:ring-indigo-800 transition-all px-4 py-3"
             value={input}
             placeholder={placeholder}
