@@ -4,7 +4,6 @@ import React, { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import ReactMarkdown, { Options } from "react-markdown";
 import { toast } from 'sonner';
-import { getAuthHeaders } from '@/lib/auth/token-storage';
 
 // Types
 interface Message {
@@ -149,11 +148,11 @@ const useChat = ({
     setIsLoading(true);
 
     try {
-      const headers = await getAuthHeaders();
-      
       const response = await fetch(api, {
         method: "POST",
-        headers,
+        headers: {
+          "Content-Type": "application/json",
+        },
         body: JSON.stringify({
           messages: [...messages, userMessage],
         }),

@@ -1,5 +1,4 @@
 import { NextRequest } from 'next/server';
-import { getAuthHeadersServer } from '@/lib/auth/token-storage';
 
 export const maxDuration = 30;
 
@@ -30,16 +29,14 @@ export async function POST(req: NextRequest) {
     };
     console.log('Sending to backend:', requestPayload);
     
-    const backendUrl = process.env.BACKEND_API_URL || 'https://culltique-joel-production.up.railway.app/langgraph/ask';
+    const backendUrl = process.env.BACKEND_API_URL || 'https://ninja-production-8034.up.railway.app/ai-agents/langgraph/start-quiz';
     console.log('Backend URL:', backendUrl);
 
-    // Get authenticated headers using your token storage system
-    const authHeaders = await getAuthHeadersServer();
-    console.log('Auth headers obtained:', Object.keys(authHeaders));
-    
     const response = await fetch(backendUrl, {
       method: 'POST',
-      headers: authHeaders,
+      headers: {
+        'Content-Type': 'application/json',
+      },
       body: JSON.stringify(requestPayload),
     });
 
