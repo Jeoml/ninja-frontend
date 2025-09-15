@@ -334,7 +334,7 @@ const Agent: React.FC<AgentProps> = ({
     <div className={cn("w-full h-full flex flex-col bg-white dark:bg-gray-900", className)}>
       {/* Welcome Message */}
       {messages.length === 0 && (
-        <div className="p-6 border-b border-gray-100 dark:border-gray-800">
+        <div className="p-6 border-b border-gray-100 dark:border-gray-800 flex-shrink-0">
           <ProjectOverview 
             title={projectTitle}
             description={projectDescription}
@@ -344,7 +344,7 @@ const Agent: React.FC<AgentProps> = ({
       )}
       
       {/* Chat Messages Area */}
-      <div className="flex-1 overflow-y-auto p-6 bg-gray-50 dark:bg-gray-900" style={{ minHeight: messages.length === 0 ? '400px' : '300px' }}>
+      <div className="flex-1 overflow-y-auto p-6 bg-gray-50 dark:bg-gray-900">
         {messages.map((message) => (
           message.role === "assistant" ? (
             <BotMessage key={message.id} message={message} />
@@ -370,7 +370,7 @@ const Agent: React.FC<AgentProps> = ({
       </div>
       
       {/* Input Area */}
-      <div className="border-t border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 p-4">
+      <div className="border-t border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 p-4 flex-shrink-0">
         <form onSubmit={handleSubmit} className="flex gap-3">
           <input
             type="text"
